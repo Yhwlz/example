@@ -10,6 +10,8 @@ fs.readFile(path.join(__dirname, './box/index2.html'), 'utf8', (err, htmlStr) =>
 
 
 const resolveFile = (htmlStr) => {
+    // 截取js css 编码
+    // 替换html中的js css 以路径引入
     const regStyle = /<style>[\s\S]*<\/style>/.exec(htmlStr)[0].replace('<style>', '').replace('</style>', '').replace(/[\r\n\t]/g, "");
     const regScript = /<script>[\s\S]*<\/script>/.exec(htmlStr)[0].replace('<script>', '').replace('</script>', '');
     const regHtml = htmlStr.
@@ -27,7 +29,7 @@ const resolveFile = (htmlStr) => {
             reg: regHtml
         }
     ];
-
+    // 截取替换之后将写入文件
     wirteFileType.forEach(item => {
         fs.writeFile(path.join(__dirname, './box/index.' + item.filetype), item.reg, (err) => {
             if (err) return console.log(err);
